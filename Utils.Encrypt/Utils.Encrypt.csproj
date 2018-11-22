@@ -3,10 +3,15 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.1.0</Version>
+    <Description>SHA1,SHA256,SHA384,SHA512,MD5,HMACSHA1,HMACSHA256,HMACSHA384,HMACSHA512,HMACMD5,AES,Base64,Bcrypt</Description>
+    <PackageProjectUrl>https://github.com/ww198643/Utils.Encrypt</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/ww198643/Dapper.Extensions/master/icon.jpg</PackageIconUrl>
+    <PackageTags>SHA1,SHA256,SHA384,SHA512,MD5,HMACSHA1,HMACSHA256,HMACSHA384,HMACSHA512,HMACMD5,AES,Base64,Bcrypt</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BCrypt.Net-Core" Version="1.4.0" />
+    <PackageReference Include="BCrypt.Net-Core" Version="1.5.0" />
   </ItemGroup>
 
 </Project>
