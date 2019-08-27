@@ -6,8 +6,11 @@
     <Version>1.2.0</Version>
     <Description>SHA1,SHA256,SHA384,SHA512,MD5,HMACSHA1,HMACSHA256,HMACSHA384,HMACSHA512,HMACMD5,AES,Base64,Bcrypt,RSA,SHA256WithRSA</Description>
     <PackageProjectUrl>https://github.com/ww198643/Utils.Encrypt</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/1100100/Dapper.Extensions/master/icon.jpg</PackageIconUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/1100100/Utils.Encrypt/master/icon.jpg</PackageIconUrl>
     <PackageTags>SHA1,SHA256,SHA384,SHA512,MD5,HMACSHA1,HMACSHA256,HMACSHA384,HMACSHA512,HMACMD5,AES,Base64,Bcrypt,RSA,SHA256WithRSA</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Authors>OWEN</Authors>
+    <Company>OWEN</Company>
   </PropertyGroup>
 
   <ItemGroup>
