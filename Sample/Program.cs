@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Security.Cryptography;
 using Utils.Encrypt;
 using RSA = Utils.Encrypt.RSA;
@@ -34,22 +35,65 @@ namespace Sample
             Console.WriteLine($"BCrypt Verify:{BCryptor.Verify("abc", bCrypt)}");
 
 
+
+
+
+            string publicXmlKey = "<RSAKeyValue><Modulus>w8oD7lBQrovytxepkGJ9vIBlEWZIeYTL+UrbDaLuw2uBGL8akcMnGKzj3D8fKaXejNzN3ls7AJfS7OsHb3+lJrCJUXVfshw/3nZumfYmNbsjQjU8o2g+zyU7ykIRZlcMRynmBFYsbvW4PZKLDaE7GuODiDamdYq5Fq3ZIhBTxLc2J5f50FHiQ1FBUW4oF+CM2QKr/dl1DdCAcWbnYKRTLvvxHwIc0LyfVEF8gQMKrrSoNAsDdqr2eUVuWYP0HH668H8Og59rFXEoXkzhIJiYLtVYJVmCfcyBG7UJwG/vFi2uDrvy0d64ItY88jniW2BSrWKZp7+kMNSpwc1gz73jrQ==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
+
             //2048 public key
-            string publicKey =
-                "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnATf/6N22jNdRolMrdXmfIZXPat/MBXav7+5P8VZXd4nOnolHI0EKbqM2Dg9WkTxFsSLgId3PfAZLYg5Byu+gU/48W5AtURS4/8B2ehmAn6eXbvuycZDO9XSH8kfqzbdNisuPLVm8x3/uyEzrU20FA6Vc1J32lHPyfKWwNg5++fISXyLUvazNuYGedR8OzB7V+JLHBPs3woQBP065px/BTGAqPn6UoE6gtgsExe6Hpxbm0tVzTwO9TJtRvBk+QDCddGlydeDjjygNFs+pOzqp1nf/AhUDAEh0ln65UT5N3vcW0k+br1aM5sZD/ZueWh2TGBSCECAAqd8K2cALGHZ3QIDAQAB";
+            string publicKey = RSATransUtil.RSAPublicKeyDotNet2Java(publicXmlKey);
+
+
+
+            string privateXmlKey = "<RSAKeyValue><Modulus>w8oD7lBQrovytxepkGJ9vIBlEWZIeYTL+UrbDaLuw2uBGL8akcMnGKzj3D8fKaXejNzN3ls7AJfS7OsHb3+lJrCJUXVfshw/3nZumfYmNbsjQjU8o2g+zyU7ykIRZlcMRynmBFYsbvW4PZKLDaE7GuODiDamdYq5Fq3ZIhBTxLc2J5f50FHiQ1FBUW4oF+CM2QKr/dl1DdCAcWbnYKRTLvvxHwIc0LyfVEF8gQMKrrSoNAsDdqr2eUVuWYP0HH668H8Og59rFXEoXkzhIJiYLtVYJVmCfcyBG7UJwG/vFi2uDrvy0d64ItY88jniW2BSrWKZp7+kMNSpwc1gz73jrQ==</Modulus><Exponent>AQAB</Exponent><P>/fNdHmK365HZjlsRg61NBAW/ZAYGKm6psJMQMsSutpF2wVzFejA/cEMSjx3e6AVOko3aBznnOIEXKsyyvknXKPLV2JkoZ0B5T3SxHBEXPEc6Y3t4cKv7+zkyfhAJEbBvuR/PZO1lZjHSwd3lAO3VIIZ4gWjiG0cWp2djJzYnvEM=</P><Q>xV5+7dzTSgAW6oxPUx///0NRrVkfvxQTh/2QdlF9uHdP11GBUN9IjRUjczq0FJx/MeGFd/Oq3OKBqBn4I6FfP5INFspGGNan++GLK2K+fmsJYteuBRyJ068Yw0MY39T2XHRMTC9wnKonmFmrfkX4ixls7XlCl8Xm+Q2clE4i2U8=</Q><DP>leS+sv+75Zz6F++i/+Eb02L9HDH+E6+sE2BKsFytb2+e8/UpTr0JxN6iJr2P4822GgUGiztfQlfX79hRLMZy7GWhWa7VTVSeBgsvuwxPdbHpQe0QIxkwq5GQPx6B6+IDn/apuL3zGwYPi4TI9epr4T3eBSx+QXGNapQ4z11EyPc=</DP><DQ>eKfL8J2OjS6A0+HynF5zoRkGVXKmdalQR1I7fhlTQfGuXXL2Gvpk39qMUWURsYf6OgQkE7BiQ6Y0nQ9DIoUENViTp9r//y86gkDfUyaKTb4hfstbFsTbfQ0NllDuY+dMtDhkbC6UKTHcAsbOj+M2jdJ9RK9chmv1R0uK7R7XLwE=</DQ><InverseQ>0Zlo4C47H090YFujVjlQ4jRshqT5YsCpEvYf0Oy7ymCxV94WBmJIeYnfYcEp6HV19s8o+1KlHD/SKyhoeITyKaElqYELPheFz25XeXSSWA4+kKxaN4k75zRRHTcVJuwAfWrF+edXYbVpWXrEvMP/RJ1m65Ct/buYLJNpPmpibsY=</InverseQ><D>RYAQpSgde9hx8EyWBIrx11g8iFCmqXxaa8QGvnB4ESa4TPCJnfSIjFnTCPvfNAmNVrOK4MPBzhQW68MCgLHvDizcke34amFcyrt/x2d5aNllSrtbKyZ2JVIyRznss0dzNE/LNv7gBwNyw2ihs9ToBkN9DX1Y2aDE0ygjS9Q/6DQA754mVp4v70dL3Vmc4bw9uLsrB+r0Pgo6GbBFrGmis218V4gnHU5xsebhFjmwwyOy9r1r2Abc37TF+Z7UtmnV2B0zb1nuERiIfbRm2MzTksSZ3uQAPtk5qMaEP0jQGfTAS8dXi8vrjZvAgEJg0EtewYsNA9hcgTx0MK9PXdkwgQ==</D></RSAKeyValue>";
+
             //2048 private key
-            string privateKey =
-                "MIIEowIBAAKCAQEAnATf/6N22jNdRolMrdXmfIZXPat/MBXav7+5P8VZXd4nOnolHI0EKbqM2Dg9WkTxFsSLgId3PfAZLYg5Byu+gU/48W5AtURS4/8B2ehmAn6eXbvuycZDO9XSH8kfqzbdNisuPLVm8x3/uyEzrU20FA6Vc1J32lHPyfKWwNg5++fISXyLUvazNuYGedR8OzB7V+JLHBPs3woQBP065px/BTGAqPn6UoE6gtgsExe6Hpxbm0tVzTwO9TJtRvBk+QDCddGlydeDjjygNFs+pOzqp1nf/AhUDAEh0ln65UT5N3vcW0k+br1aM5sZD/ZueWh2TGBSCECAAqd8K2cALGHZ3QIDAQABAoIBABvmB0QIL+2Ot8QwMwT2tdNYlmsRqpmnnskg+Hg9yuAtJGihhNdZJABuOldDnzzwDQhcNvHRx3HM6EOrEz+EA/nNmh9Z7ro7MHNSmzsjAnK5v4nVXDq6eDVP49YJOd983QudpxP2ACXDHIKSylHYDjZz8SeA/KuOa5CaD3kGcT/pBwidWnoWoAjnG3wUmvjXaCqXkdcxYvN2OsUPsbSdUPu4rUz2arzMpsP0DXPWr0jMFn6DMikeCAvCyMxFB53tP5PHSdoLjoa/QdLfCcZ7qmKSoG+GSJNXweQYJWOMNGgzyuzUCwkrbi8UtdlussOvcXSCbPFV3DoS/5A/OtxBKaUCgYEA63cE1p2AUY/XOK6mD6ss1N81TOA0Ibtmx8byXHGZthwlqBoM/WHOUn9iCmpp5vIiiKLNDC00fOA9h/Pe/MiDeBDlBqLvw9O/RZlKVhDjzZq1UyjEwoqrKz6WfTFpDBCotyC7lqAZtabrYvk9Fl0YONaPgB3a4JhN74lLY7LeFp8CgYEAqaAmgatpW/Ycff2CjCmNtazpoAAUb75cbynemDJ+Jsx7CSvHLl7VCZkD8IKk4z20DmAnau6DlJOjgu8cEdwErJCB+632kbHYBP4t4e0QzkWGzBWtsEVdRq+BfLRToyHiLAJIGrp3WwIxNYzqJC1N4LU75MXgbBpvtTzLvnn+qgMCgYAN1DKjjCKCJ8mDGbbFCs+aPPW7axuEs6Xoq8WGKmHVsTeA9O64XusoKzUN2YwYtTXUAoO6aFlB0EWs22TIQdp+zbc1uZINVT1RkBwui9VlOOXXWXic2FoPMyDRf3pk7AGMp858nTCFW6VNbcfprVQD2o4Y/yfgsvE41T5pP5MNjwKBgDrIE/AFrbo/nHoQuwfFcqVNqZxXyr06k5+2O7w0a0EYxV5VPG4WUO9Fhnb3XxqcjGQa8C3/P7viOdyq7ehGfZwra9AC5hpxLfH0/4N2esdwkpjwvkMClqNjOJU1jHJQ0Kb9l20jxy7ToKf1EEK/LGi9hWbvJ6lus91zlwuIDTdvAoGBAMdgZmm5YdkbCQr7ec/0wJ80TYT7dhroVqTZ3kPSYunprUpI5l8KTyxW8ziwww8gb1POjIzyHfRYa9GrKTY/tMlgefcvZ+3zjbYrXprPi1lpFe6qj6y7S0Is0twYU4p8cKhW3RsAAnEvgJrq7JPQRvsYWmP1pZiriP2IQ0glBiAr";
+            string privateKey = RSATransUtil.RSAPrivateKeyDotNet2Java(privateXmlKey);
 
             var sourceString = "Hello world!";
-            var rsaEncryptString = RSA.Encrypt(sourceString, publicKey);
-            Console.WriteLine($"RSA Encrypt:{rsaEncryptString}\n");
-            Console.WriteLine($"RSA Decrypt:{RSA.Decrypt(rsaEncryptString, privateKey)}\n");
+
+            var rsaEncryptStringForPublicXmlKey = RSA.EncryptWithPublicXmlKey(sourceString, publicXmlKey);
+            Console.WriteLine($"RSA Encrypt For Public XML Key:{rsaEncryptStringForPublicXmlKey}\n");
+
+            var rsaDecryptStringForPublicXmlKey = RSA.DecryptWithPrivateXmlKey(rsaEncryptStringForPublicXmlKey, privateXmlKey);
+            Console.WriteLine($"RSA Decrypt For Private XML Key:{rsaDecryptStringForPublicXmlKey}\n");
+
+
+            var rsaEncryptStringForPrivateXmlKey = RSA.EncryptWithPrivateXmlKey(sourceString, privateXmlKey);
+            Console.WriteLine($"RSA Encrypt For Private XML Key:{rsaEncryptStringForPrivateXmlKey}\n");
+
+            var rsaDecryptStringForPrivateXmlKey = RSA.DecryptWithPrivateXmlKey(rsaEncryptStringForPrivateXmlKey, privateXmlKey);
+            Console.WriteLine($"RSA Decrypt For Private XML Key:{rsaDecryptStringForPrivateXmlKey}\n");
+
+
+
+            var rsaEncryptStringForPublicKey = RSA.EncryptWithPublicKey(sourceString, publicKey);
+            Console.WriteLine($"RSA Encrypt For Public Key:{rsaEncryptStringForPublicKey}\n");
+
+            var rsaDecryptStringForPublicKey = RSA.DecryptWithPrivateKey(rsaEncryptStringForPublicKey, privateKey);
+            Console.WriteLine($"RSA Decrypt For Private  Key:{rsaDecryptStringForPublicKey}\n");
+
+
+            var rsaEncryptStringForPrivateKey = RSA.EncryptWithPrivateKey(sourceString, privateKey);
+            Console.WriteLine($"RSA Encrypt For Private Key:{rsaEncryptStringForPrivateKey}\n");
+
+            var rsaDecryptStringForPrivateKey = RSA.DecryptWithPrivateKey(rsaEncryptStringForPrivateKey, privateKey);
+            Console.WriteLine($"RSA Decrypt For Private XML Key:{rsaDecryptStringForPrivateKey}\n");
+
+
 
             var rsaSignString = RSA.Sign(sourceString, privateKey);
             Console.WriteLine($"RSA sign:{rsaSignString}\n");
 
             Console.WriteLine($"RSA verify sign:{RSA.Verify(sourceString, rsaSignString, publicKey)}\n");
+
+
+            var rsaSignStringWithXmlKey = RSA.SignWithXmlKey(sourceString, privateXmlKey);
+            Console.WriteLine($"RSA sign with xml key:{rsaSignStringWithXmlKey}\n");
+
+            Console.WriteLine($"RSA verify sign with xml key:{RSA.VerifyWithXmlKey(sourceString, rsaSignStringWithXmlKey, publicXmlKey)}\n");
+
+
             Console.ReadKey();
         }
     }
