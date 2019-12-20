@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace Utils.Encrypt
 {
-    public class RSA
+    public static class RSA
     {
         #region Encrypt
         public static string EncryptWithPublicKey(string sourceString, string publicKey, RSAEncryptionPadding encryptionPadding = null)

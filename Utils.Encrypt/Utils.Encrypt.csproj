@@ -3,19 +3,20 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.2.1</Version>
-    <Description>SHA1,SHA256,SHA384,SHA512,MD5,HMACSHA1,HMACSHA256,HMACSHA384,HMACSHA512,HMACMD5,AES,Base64,Bcrypt,RSA,SHA256WithRSA</Description>
+    <Version>1.3.0</Version>
+    <Description>SHA1,SHA256,SHA384,SHA512,MD5,HMACSHA1,HMACSHA256,HMACSHA384,HMACSHA512,HMACMD5,AES,Base64,Bcrypt,RSA,SHA256WithRSA,PBKDF2</Description>
     <PackageProjectUrl>https://github.com/1100100/Utils.Encrypt</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/1100100/Utils.Encrypt/master/icon.jpg</PackageIconUrl>
-    <PackageTags>SHA1,SHA256,SHA384,SHA512,MD5,HMACSHA1,HMACSHA256,HMACSHA384,HMACSHA512,HMACMD5,AES,Base64,Bcrypt,RSA,SHA256WithRSA</PackageTags>
+    <PackageTags>SHA1,SHA256,SHA384,SHA512,MD5,HMACSHA1,HMACSHA256,HMACSHA384,HMACSHA512,HMACMD5,AES,Base64,Bcrypt,RSA,SHA256WithRSA,PBKDF2</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Authors>OWEN</Authors>
     <Company>OWEN</Company>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BCrypt.Net-Core" Version="1.5.0" />
+    <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
     <PackageReference Include="BouncyCastle.NetCore" Version="1.8.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="3.1.0" />
   </ItemGroup>
 
 </Project>
