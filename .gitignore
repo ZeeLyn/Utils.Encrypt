@@ -1,6 +1,6 @@
 
 *.lock
-.vs/Utils.Encrypt/v15/.suo
+.vs/
 *.ide-shm
 *.ide
 *.ide-wal

@@ -1,4 +1,5 @@
 ﻿using bCrypt = BCrypt.Net;
+
 namespace Utils.Encrypt
 {
     public static class BCryptor
