@@ -8,48 +8,57 @@ namespace Utils.Encrypt
     public static class RSA
     {
         #region Encrypt
-        public static string EncryptWithPublicKey(string sourceString, string publicKey, RSAEncryptionPadding encryptionPadding = null)
+
+        public static string EncryptWithPublicKey(string sourceString, string publicKey,
+            RSAEncryptionPadding encryptionPadding = null)
         {
-            return EncryptWithPublicXmlKey(sourceString, RSATransUtil.RSAPublicKeyJava2DotNet(publicKey), encryptionPadding);
+            return EncryptWithPublicXmlKey(sourceString, RSATransUtil.RSAPublicKeyJava2DotNet(publicKey),
+                encryptionPadding);
         }
 
-        public static string EncryptWithPrivateKey(string sourceString, string privateKey, RSAEncryptionPadding encryptionPadding = null)
+        public static string EncryptWithPrivateKey(string sourceString, string privateKey,
+            RSAEncryptionPadding encryptionPadding = null)
         {
-            return EncryptWithPublicXmlKey(sourceString, RSATransUtil.RSAPrivateKeyJava2DotNet(privateKey), encryptionPadding);
+            return EncryptWithPublicXmlKey(sourceString, RSATransUtil.RSAPrivateKeyJava2DotNet(privateKey),
+                encryptionPadding);
         }
 
-        public static string EncryptWithPublicXmlKey(string sourceString, string publicXmlKey, RSAEncryptionPadding encryptionPadding = null)
+        public static string EncryptWithPublicXmlKey(string sourceString, string publicXmlKey,
+            RSAEncryptionPadding encryptionPadding = null)
         {
-            using (var rsa = System.Security.Cryptography.RSA.Create())
-            {
-                rsa.ImportParameters(GenerateParametersFromPublicXmlKey(publicXmlKey));
-                return Convert.ToBase64String(rsa.Encrypt(Encoding.UTF8.GetBytes(sourceString), encryptionPadding == null ? RSAEncryptionPadding.Pkcs1 : encryptionPadding));
-            }
+            using var rsa = System.Security.Cryptography.RSA.Create();
+            rsa.ImportParameters(GenerateParametersFromPublicXmlKey(publicXmlKey));
+            return Convert.ToBase64String(rsa.Encrypt(Encoding.UTF8.GetBytes(sourceString),
+                encryptionPadding == null ? RSAEncryptionPadding.Pkcs1 : encryptionPadding));
         }
 
-        public static string EncryptWithPrivateXmlKey(string sourceString, string privateXmlKey, RSAEncryptionPadding encryptionPadding = null)
+        public static string EncryptWithPrivateXmlKey(string sourceString, string privateXmlKey,
+            RSAEncryptionPadding encryptionPadding = null)
         {
-            using (var rsa = System.Security.Cryptography.RSA.Create())
-            {
-                rsa.ImportParameters(GenerateParametersFromPrivateXmlKey(privateXmlKey));
-                return Convert.ToBase64String(rsa.Encrypt(Encoding.UTF8.GetBytes(sourceString), encryptionPadding == null ? RSAEncryptionPadding.Pkcs1 : encryptionPadding));
-            }
+            using var rsa = System.Security.Cryptography.RSA.Create();
+            rsa.ImportParameters(GenerateParametersFromPrivateXmlKey(privateXmlKey));
+            return Convert.ToBase64String(rsa.Encrypt(Encoding.UTF8.GetBytes(sourceString),
+                encryptionPadding == null ? RSAEncryptionPadding.Pkcs1 : encryptionPadding));
         }
+
         #endregion
 
         #region Decrypt
-        public static string DecryptWithPrivateKey(string encryptString, string privateKey, RSAEncryptionPadding encryptionPadding = null)
+
+        public static string DecryptWithPrivateKey(string encryptString, string privateKey,
+            RSAEncryptionPadding encryptionPadding = null)
         {
-            return DecryptWithPrivateXmlKey(encryptString, RSATransUtil.RSAPrivateKeyJava2DotNet(privateKey), encryptionPadding);
+            return DecryptWithPrivateXmlKey(encryptString, RSATransUtil.RSAPrivateKeyJava2DotNet(privateKey),
+                encryptionPadding);
         }
 
-        public static string DecryptWithPrivateXmlKey(string encryptString, string privateXmlKey, RSAEncryptionPadding encryptionPadding = null)
+        public static string DecryptWithPrivateXmlKey(string encryptString, string privateXmlKey,
+            RSAEncryptionPadding encryptionPadding = null)
         {
-            using (var rsa = System.Security.Cryptography.RSA.Create())
-            {
-                rsa.ImportParameters(GenerateParametersFromPrivateXmlKey(privateXmlKey));
-                return Encoding.UTF8.GetString(rsa.Decrypt(Convert.FromBase64String(encryptString), encryptionPadding == null ? RSAEncryptionPadding.Pkcs1 : encryptionPadding));
-            }
+            using var rsa = System.Security.Cryptography.RSA.Create();
+            rsa.ImportParameters(GenerateParametersFromPrivateXmlKey(privateXmlKey));
+            return Encoding.UTF8.GetString(rsa.Decrypt(Convert.FromBase64String(encryptString),
+                encryptionPadding == null ? RSAEncryptionPadding.Pkcs1 : encryptionPadding));
         }
 
         #endregion
@@ -59,33 +68,35 @@ namespace Utils.Encrypt
             return SignWithXmlKey(sourceString, RSATransUtil.RSAPrivateKeyJava2DotNet(privateKey), signaturePadding);
         }
 
-        public static string SignWithXmlKey(string sourceString, string privateXmlKey, RSASignaturePadding signaturePadding = null)
+        public static string SignWithXmlKey(string sourceString, string privateXmlKey,
+            RSASignaturePadding signaturePadding = null)
         {
-            using (var rsa = System.Security.Cryptography.RSA.Create())
-            {
-                rsa.ImportParameters(GenerateParametersFromPrivateXmlKey(privateXmlKey));
-                var dataBytes = Encoding.UTF8.GetBytes(sourceString);
-                var signatureBytes = rsa.SignData(dataBytes, HashAlgorithmName.SHA256, signaturePadding == null ? RSASignaturePadding.Pkcs1 : signaturePadding);
-                return Convert.ToBase64String(signatureBytes);
-            }
+            using var rsa = System.Security.Cryptography.RSA.Create();
+            rsa.ImportParameters(GenerateParametersFromPrivateXmlKey(privateXmlKey));
+            var dataBytes = Encoding.UTF8.GetBytes(sourceString);
+            var signatureBytes = rsa.SignData(dataBytes, HashAlgorithmName.SHA256,
+                signaturePadding == null ? RSASignaturePadding.Pkcs1 : signaturePadding);
+            return Convert.ToBase64String(signatureBytes);
         }
 
 
-        public static bool Verify(string sourceString, string signString, string publicKey, RSASignaturePadding signaturePadding = null)
+        public static bool Verify(string sourceString, string signString, string publicKey,
+            RSASignaturePadding signaturePadding = null)
         {
-            return VerifyWithXmlKey(sourceString, signString, RSATransUtil.RSAPublicKeyJava2DotNet(publicKey), signaturePadding);
+            return VerifyWithXmlKey(sourceString, signString, RSATransUtil.RSAPublicKeyJava2DotNet(publicKey),
+                signaturePadding);
         }
 
-        public static bool VerifyWithXmlKey(string sourceString, string signString, string publicXmlKey, RSASignaturePadding signaturePadding = null)
+        public static bool VerifyWithXmlKey(string sourceString, string signString, string publicXmlKey,
+            RSASignaturePadding signaturePadding = null)
         {
-            using (var rsa = System.Security.Cryptography.RSA.Create())
-            {
-                rsa.ImportParameters(GenerateParametersFromPublicXmlKey(publicXmlKey));
-                var dataBytes = Encoding.UTF8.GetBytes(sourceString);
-                var signBytes = Convert.FromBase64String(signString);
-                var verify = rsa.VerifyData(dataBytes, signBytes, HashAlgorithmName.SHA256, signaturePadding == null ? RSASignaturePadding.Pkcs1 : signaturePadding);
-                return verify;
-            }
+            using var rsa = System.Security.Cryptography.RSA.Create();
+            rsa.ImportParameters(GenerateParametersFromPublicXmlKey(publicXmlKey));
+            var dataBytes = Encoding.UTF8.GetBytes(sourceString);
+            var signBytes = Convert.FromBase64String(signString);
+            var verify = rsa.VerifyData(dataBytes, signBytes, HashAlgorithmName.SHA256,
+                signaturePadding == null ? RSASignaturePadding.Pkcs1 : signaturePadding);
+            return verify;
         }
 
         #region Private methods
@@ -120,7 +131,7 @@ namespace Utils.Encrypt
                 Exponent = Convert.FromBase64String(doc.Element("Exponent")?.Value ?? "")
             };
         }
+
         #endregion
     }
-
 }

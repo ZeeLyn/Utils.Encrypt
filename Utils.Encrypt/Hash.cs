@@ -9,7 +9,6 @@ namespace Utils.Encrypt
         private static readonly char[] _digitals =
             { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
-        private static readonly MD5 Md5 = System.Security.Cryptography.MD5.Create();
         private static readonly SHA1 Sha1 = System.Security.Cryptography.SHA1.Create();
         private static readonly SHA256 Sha256 = System.Security.Cryptography.SHA256.Create();
         private static readonly SHA384 Sha384 = System.Security.Cryptography.SHA384.Create();
@@ -49,22 +48,26 @@ namespace Utils.Encrypt
 
         public static string MD5(string sourceText)
         {
-            var buffer = Encoding.UTF8.GetBytes(sourceText);
-            Md5.Initialize();
-            var hash = Md5.ComputeHash(buffer);
-            return BytesToString(hash);
+#if NET5_0_OR_GREATER
+            var inputBytes = Encoding.UTF8.GetBytes(sourceText);
+            var hashBytes = System.Security.Cryptography.MD5.HashData(inputBytes);
+            return Convert.ToHexString(hashBytes);
+#else
+            using var md5 = System.Security.Cryptography.MD5.Create();
+            var inputBytes = Encoding.UTF8.GetBytes(sourceText);
+            var hashBytes = md5.ComputeHash(inputBytes);
+            return BitConverter.ToString(hashBytes).Replace("-", "");
+#endif
         }
 
         public static string HMACSHA1(string sourceText, string key)
         {
             var keyByte = Encoding.UTF8.GetBytes(key);
             var sourceBytes = Encoding.UTF8.GetBytes(sourceText);
-            using (var hmacSha1 = new HMACSHA1(keyByte))
-            {
-                var bytes = hmacSha1.ComputeHash(sourceBytes);
-                hmacSha1.Clear();
-                return BitConverter.ToString(bytes).Replace("-", "").ToLower();
-            }
+            using var hmacSha1 = new HMACSHA1(keyByte);
+            var bytes = hmacSha1.ComputeHash(sourceBytes);
+            hmacSha1.Clear();
+            return BitConverter.ToString(bytes).Replace("-", "").ToLower();
         }
 
 
@@ -72,48 +75,40 @@ namespace Utils.Encrypt
         {
             var keyByte = Encoding.UTF8.GetBytes(key);
             var sourceBytes = Encoding.UTF8.GetBytes(sourceText);
-            using (var hmacSha256 = new HMACSHA256(keyByte))
-            {
-                var bytes = hmacSha256.ComputeHash(sourceBytes);
-                hmacSha256.Clear();
-                return BitConverter.ToString(bytes).Replace("-", "").ToLower();
-            }
+            using var hmacSha256 = new HMACSHA256(keyByte);
+            var bytes = hmacSha256.ComputeHash(sourceBytes);
+            hmacSha256.Clear();
+            return BitConverter.ToString(bytes).Replace("-", "").ToLower();
         }
 
         public static string HMACSHA384(string sourceText, string key)
         {
             var keyByte = Encoding.UTF8.GetBytes(key);
             var sourceBytes = Encoding.UTF8.GetBytes(sourceText);
-            using (var hmacSha384 = new HMACSHA384(keyByte))
-            {
-                var bytes = hmacSha384.ComputeHash(sourceBytes);
-                hmacSha384.Clear();
-                return BitConverter.ToString(bytes).Replace("-", "").ToLower();
-            }
+            using var hmacSha384 = new HMACSHA384(keyByte);
+            var bytes = hmacSha384.ComputeHash(sourceBytes);
+            hmacSha384.Clear();
+            return BitConverter.ToString(bytes).Replace("-", "").ToLower();
         }
 
         public static string HMACSHA512(string sourceText, string key)
         {
             var keyByte = Encoding.UTF8.GetBytes(key);
             var sourceBytes = Encoding.UTF8.GetBytes(sourceText);
-            using (var hmacSha512 = new HMACSHA512(keyByte))
-            {
-                var bytes = hmacSha512.ComputeHash(sourceBytes);
-                hmacSha512.Clear();
-                return BitConverter.ToString(bytes).Replace("-", "").ToLower();
-            }
+            using var hmacSha512 = new HMACSHA512(keyByte);
+            var bytes = hmacSha512.ComputeHash(sourceBytes);
+            hmacSha512.Clear();
+            return BitConverter.ToString(bytes).Replace("-", "").ToLower();
         }
 
         public static string HMACMD5(string sourceText, string key)
         {
             var keyByte = Encoding.UTF8.GetBytes(key);
             var sourceBytes = Encoding.UTF8.GetBytes(sourceText);
-            using (var hmacMd5 = new HMACMD5(keyByte))
-            {
-                var bytes = hmacMd5.ComputeHash(sourceBytes);
-                hmacMd5.Clear();
-                return BitConverter.ToString(bytes).Replace("-", "").ToLower();
-            }
+            using var hmacMd5 = new HMACMD5(keyByte);
+            var bytes = hmacMd5.ComputeHash(sourceBytes);
+            hmacMd5.Clear();
+            return BitConverter.ToString(bytes).Replace("-", "").ToLower();
         }
 
         private static string BytesToString(byte[] bytes)

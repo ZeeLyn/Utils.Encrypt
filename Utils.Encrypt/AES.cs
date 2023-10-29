@@ -33,20 +33,16 @@ namespace Utils.Encrypt
             }
 
             var toEncryptArray = Encoding.UTF8.GetBytes(sourceText);
-            using (var rm = new RijndaelManaged
-                   {
-                       Key = Encoding.UTF8.GetBytes(key),
-                       Mode = mode,
-                       Padding = padding,
-                   })
-            {
-                if (mode != CipherMode.ECB)
-                    rm.IV = Encoding.UTF8.GetBytes(iv);
-                var cTransform = rm.CreateEncryptor();
-                var resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
-                rm.Clear();
-                return Convert.ToBase64String(resultArray, 0, resultArray.Length);
-            }
+            using var rm = new RijndaelManaged();
+            rm.Key = Encoding.UTF8.GetBytes(key);
+            rm.Mode = mode;
+            rm.Padding = padding;
+            if (mode != CipherMode.ECB)
+                rm.IV = Encoding.UTF8.GetBytes(iv);
+            var cTransform = rm.CreateEncryptor();
+            var resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
+            rm.Clear();
+            return Convert.ToBase64String(resultArray, 0, resultArray.Length);
         }
 
         /// <summary>
@@ -77,19 +73,15 @@ namespace Utils.Encrypt
             }
 
             var toEncryptArray = Convert.FromBase64String(encryptText);
-            using (var rm = new RijndaelManaged
-                   {
-                       Key = Encoding.UTF8.GetBytes(key),
-                       Mode = mode,
-                       Padding = padding,
-                   })
-            {
-                if (mode != CipherMode.ECB)
-                    rm.IV = Encoding.UTF8.GetBytes(iv);
-                var cTransform = rm.CreateDecryptor();
-                var resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
-                return Encoding.UTF8.GetString(resultArray);
-            }
+            using var rm = new RijndaelManaged();
+            rm.Key = Encoding.UTF8.GetBytes(key);
+            rm.Mode = mode;
+            rm.Padding = padding;
+            if (mode != CipherMode.ECB)
+                rm.IV = Encoding.UTF8.GetBytes(iv);
+            var cTransform = rm.CreateDecryptor();
+            var resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
+            return Encoding.UTF8.GetString(resultArray);
         }
     }
 }

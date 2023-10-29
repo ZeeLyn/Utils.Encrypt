@@ -10,7 +10,7 @@ namespace Utils.Encrypt
 
     public static class Timestamp
     {
-        private static readonly DateTime Jan1St1970 = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        private static readonly DateTime Jan1St1970 = new(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
 
         public static long ToTimestamp(this DateTime time, TimestampUnit timestampUnit = TimestampUnit.Second)
